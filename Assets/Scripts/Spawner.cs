@@ -70,9 +70,7 @@ public class Spawner : MonoBehaviour
                 }
             }
         }
-
     }
-
     public void GenerateMines()
     {
         if (mines > length * height / 2)
