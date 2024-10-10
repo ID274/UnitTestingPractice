@@ -303,7 +303,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 5, y: 20, z: 6}
+  m_LocalPosition: {x: 9, y: 20, z: 9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -338,11 +338,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 506d845baa63652409e0bb495e4e1c7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  length: 5
-  height: 5
-  mines: 30
+  length: 10
+  height: 10
+  mines: 8
   blockPrefab: {fileID: 7786117165717930613, guid: c936803c212d9e947bfa355d359d3ad3, type: 3}
   blockCount: 0
+  blocks: []
 --- !u!4 &1445886128
 Transform:
   m_ObjectHideFlags: 0
@@ -387,8 +388,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70acfd1453f9b2047874c83e7af8fa9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blocks: []
   gameOver: 0
+  blocks: []
 --- !u!4 &1695877593
 Transform:
   m_ObjectHideFlags: 0
