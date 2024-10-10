@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static PlasticPipe.PlasticProtocol.Messages.Serialization.ItemHandlerMessagesSerialization;
 
 public class Spawner : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private GameObject blockPrefab;
     [SerializeField] private int blockCount = 0;
     List<Vector3> minePos = new List<Vector3>();
+    [SerializeField] List<GameObject> blocks = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
@@ -42,8 +44,33 @@ public class Spawner : MonoBehaviour
                 {
                     blockInstance.GetComponent<BlockScript>().mine = true;
                 }
+                blocks.Add(blockInstance);
             }
         }
+        foreach (GameObject block in blocks)
+        {
+            HashSet<GameObject> countedMines = new HashSet<GameObject>(); // Avoid double-counting
+
+            foreach (GameObject block1 in blocks)
+            {
+                if (block != block1) // Prevent comparing the block with itself
+                {
+                    // Check horizontal, vertical, and diagonal neighbors
+                    float absoluteX = Mathf.Abs(block.transform.position.x - block1.transform.position.x);
+                    float absoluteZ = Mathf.Abs(block.transform.position.z - block1.transform.position.z);
+                    if ((absoluteX == 2 && absoluteZ == 0) || (absoluteX == 0 && absoluteZ == 2) || (absoluteX == 2 && absoluteZ == 2))
+                    {
+                        // Check if the neighboring block is a mine and hasn't already been counted
+                        if (block1.GetComponent<BlockScript>().mine == true && !countedMines.Contains(block1))
+                        {
+                            block.GetComponent<BlockScript>().mineCount++;
+                            countedMines.Add(block1); // Add to HashSet to avoid double-counting
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     public void GenerateMines()

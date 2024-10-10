@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [Tooltip("DON'T CHANGE")][SerializeField] GameObject[] blocks;
     public static GameManager Instance { get; private set; }
 
     [SerializeField] public bool gameOver;
+
+    [Tooltip("DON'T CHANGE")][SerializeField] public List<GameObject> blocks = new List<GameObject>();
+
 
     private void Awake()
     {
@@ -26,6 +28,10 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        if (!gameOver)
+        {
+            gameOver = true;
+        }
         //game over
         GameObject[] blocks = GameObject.FindGameObjectsWithTag("Block");
 
