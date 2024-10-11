@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class BlockScript : MonoBehaviour
 {
-    [SerializeField] public bool mine, clicked;
-    [SerializeField] public Material green, red, lime;
+    [SerializeField] public bool mine, clicked, flagged;
+    [SerializeField] public Material clearMat, mineMat, dangerMat, flagMat, defaultMat;
 
     [SerializeField] public TMP_Text minesText;
     [SerializeField] public GameObject minesTextObject;
@@ -18,6 +18,7 @@ public class BlockScript : MonoBehaviour
     private void Start()
     {
         minesText = minesTextObject.GetComponent<TMP_Text>();
+        defaultMat = GetComponent<MeshRenderer>().material;
     }
 
     private void OnMouseDown()
@@ -32,37 +33,60 @@ public class BlockScript : MonoBehaviour
             }
         }
     }
+    private void OnMouseOver()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (flagged == false)
+            {
+                ChangeColour(flagMat);
+                flagged = true;
+            }
+            else
+            {
+                ChangeColour(defaultMat);
+            }
+        }
+    }
 
     public void ChangeColour()
     {
-        clicked = true;  // Mark block as clicked
+        if (flagged == false)
+        {
+            clicked = true;  // Mark block as clicked
 
-        // Set block color based on whether it's a mine or based on mine count
-        if (!mine && mineCount > 0)
-        {
-            gameObject.GetComponent<MeshRenderer>().material = green;
-        }
-        else if (mine)
-        {
-            gameObject.GetComponent<MeshRenderer>().material = red;
-            GameManager.Instance.gameOver = true;
-        }
-        else
-        {
-            gameObject.GetComponent<MeshRenderer>().material = lime;
-        }
+            // Set block color based on whether it's a mine or based on mine count
+            if (!mine && mineCount > 0)
+            {
+                GetComponent<MeshRenderer>().material = dangerMat;
+            }
+            else if (mine)
+            {
+                GetComponent<MeshRenderer>().material = mineMat;
+                GameManager.Instance.gameOver = true;
+            }
+            else
+            {
+                GetComponent<MeshRenderer>().material = clearMat;
+            }
 
-        minesText.text = mineCount.ToString();
-        if (mineCount != 0)
-        {
-            minesTextObject.SetActive(true);
-        }
+            minesText.text = mineCount.ToString();
+            if (mineCount != 0 && !mine)
+            {
+                minesTextObject.SetActive(true);
+            }
 
-        // Only flood fill if there are no neighboring mines and game isn't over
-        if (mineCount == 0 && !GameManager.Instance.gameOver)
-        {
-            FloodFill();
+            // Only flood fill if there are no neighboring mines and game isn't over
+            if (mineCount == 0 && !GameManager.Instance.gameOver)
+            {
+                FloodFill();
+            }
         }
+    }
+
+    public void ChangeColour(Material material)
+    {
+        GetComponent<MeshRenderer>().material = material;
     }
 
     private void FloodFill()

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static PlasticPipe.PlasticProtocol.Messages.Serialization.ItemHandlerMessagesSerialization;
 
 public class Spawner : MonoBehaviour
 {
@@ -10,7 +9,7 @@ public class Spawner : MonoBehaviour
     [Range(1, 10)]
     [SerializeField] public int height;
     [Range(1, 30)]
-    [Header("CAN'T BE MORE THAN HALF OF AREA")] [SerializeField] public int mines;
+    [Header("CAN'T BE MORE THAN HALF OF AREA")][SerializeField] public int mines;
 
 
     [SerializeField] private GameObject blockPrefab;
@@ -93,3 +92,4 @@ public class Spawner : MonoBehaviour
     }
 
 }
+
